@@ -40,3 +40,72 @@ public:
 
 
 //https://docs.google.com/document/d/1m-OCIS35DOH568t-KAo21U7p5FrZKLosP8YXjNW1ocw/edit?usp=sharing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Solution {
+public:
+
+    bool vis[55][55]; //2) vis array niya nilam.  
+    vector<pair<int, int>> movee = {{0,1},{0,-1},{1,0},{-1,0}}; 
+    int n,m;
+    int cnt; //07 আমরা গ্লোবালি  একটা কাউন্ট varialbe নিলাম 
+
+
+      bool valid(int i, int j){
+        if(i<0 || i>=n || j<0 || j>=m){ 
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    void dfs(int si, int sj, vector<vector<int>>& grid )
+    {
+        vis[si][sj] = true;
+        cnt++; // 9) প্রতিবার DFS চলার সময় কাউন্ট কে 1 বাড়িয়ে দিলাম 
+
+        for(int i=0; i<4; i++){
+            int ci = si + movee[i].first;
+            int cj = sj + movee[i].second;
+            if(valid(ci,cj) && !vis[ci][cj] && grid[ci][cj] == 1)
+                dfs(ci,cj, grid);
+        }
+    }
+
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+       //int cnt = 0; //উপরে dfs  এর সকল বেসিক কাজগুলো করে ফেললাম. যতবার  dfs চলবে ততবার count++ করবো
+        n = grid.size();  //1) Row and column number বের করতে হবে 
+        m = grid[0].size();
+
+        memset(vis,false, sizeof(vis));
+
+        //3) এবার এই ভিসিটেড এর উপরেই লুপ চালাবো এখানে যখনই আনভিজিটেড পাবো তখনই DFS চালাবো 
+        for(int i=0; i<n; i++)
+            for(int j=0; j<m; j++)
+                if(!vis[i][j] && grid[i][j] == 1) // grid == 1 or land হতে হবে
+                    {
+                        dfs(i,j, grid); 
+                       // cnt++; 5) component বার kora আমাদের কাজ না। amader কাজ হল each component e যাব যার মাক্স তাকে return করবো. কারন আমাদের জানতে হবে প্রতিটি আইল্যান্ডে কয়টা করে node আছে 
+                       cnt = 0; // 8) প্রতিবার DFS চালানোর আগে এটাকে 0 করে নিব 
+                       cout << cnt << end; // 10) আমরা এখনো প্রিন্ট করে দেখতে পারি আমাদের কাউন্ট আসছে কিনা সেটা দেখার চেষ্টা করছি. এখান থেকে আমরা ম্যাক্সিমাম টা জাস্ট প্রিন্ট করব 
+
+
+
+                    }
+                    return cnt; // 4) আমাদের যে ছয়টা কম্পনেন্ট বা ছয়টার ল্যান্ড আছে সেটা বের করতে পারছি কিনা একবার প্রিন্ট করে দেখলাম 
+
+    }
+};
